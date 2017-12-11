@@ -245,146 +245,21 @@
 </nav>
 <div class="pcoded-main-container" [style.margin-top]="headerFixedMargin">
  <div class="pcoded-wrapper">
-   <nav
-     id="main_navbar"
-     class="pcoded-navbar"
-     (clickOutside)="onClickedOutsideSidebar($event)"
-     [exclude]="'#mobile-collapse'"
-     [attr.pcoded-header-position]="pcodedHeaderPosition"
-     [attr.navbar-theme]="navBarTheme"
-     [attr.active-item-theme]="activeItemTheme"
-     sub-item-theme="theme2"
-     active-item-style="style0"
-     [attr.pcoded-navbar-position]="pcodedSidebarPosition"
-   >
-     <div class="pcoded-inner-navbar main-menu" appAccordion>
-       <perfect-scrollbar [style.max-width]="'235px'" [style.max-height]="sidebarFixedHeight" [config]="config">
-         <span *ngFor="let asideItems of menuItems.getAll()" class="d-color">
-           <div class="pcoded-navigation-label" [attr.menu-title-theme]="menuTitleTheme">{{asideItems.label}}</div>
-           <ul class="pcoded-item pcoded-left-item" [attr.item-border]="itemBorder" [attr.item-border-style]="itemBorderStyle" [attr.subitem-border]="subItemBorder" *ngFor="let asideItem of asideItems.main" appAccordionLink group="{{asideItem.state}}">
-             <li [routerLinkActive]="['active']" *ngIf="asideItem.type === 'external'" appAccordionLink group="{{asideItem.state}}">
-               <a href="{{asideItem.external}}" target="{{asideItem.target ? '_blank' : '_self'}}" appAccordionToggle>
-                 <span class="pcoded-micon"><i class="{{ asideItem.icon }}"></i><b>{{ asideItem.short_label }}</b></span>
-                 <span class="pcoded-mtext">{{ asideItem.name }}</span>
-                 <span *ngFor="let asideBadge of asideItem.badge" class="pcoded-badge label label-{{ asideBadge.type }}">{{asideBadge.value}}</span>
-                 <span class="pcoded-mcaret"></span>
-               </a>
-             </li>
-
-             <li [routerLinkActive]="['active']" *ngIf="asideItem.type === 'link'" appAccordionLink group="{{asideItem.state}}">
-               <a [routerLink]="['/', asideItem.main_state, asideItem.state]" target="{{asideItem.target ? '_blank' : '_self'}}" appAccordionToggle *ngIf="asideItem.main_state; else mainContent">
-                 <span class="pcoded-micon"><i class="{{ asideItem.icon }}"></i><b>{{ asideItem.short_label }}</b></span>
-                 <span class="pcoded-mtext">{{ asideItem.name }}</span>
-                 <span *ngFor="let asideBadge of asideItem.badge" class="pcoded-badge label label-{{ asideBadge.type }}">{{asideBadge.value}}</span>
-                 <span class="pcoded-mcaret"></span>
-               </a>
-               <ng-template #mainContent>
-                 <a [routerLink]="['/', asideItem.state]" target="{{asideItem.target ? '_blank' : '_self'}}" appAccordionToggle>
-                   <span class="pcoded-micon"><i class="{{ asideItem.icon }}"></i><b>{{ asideItem.short_label }}</b></span>
-                   <span class="pcoded-mtext">{{ asideItem.name }}</span>
-                   <span *ngFor="let asideBadge of asideItem.badge" class="pcoded-badge label label-{{ asideBadge.type }}">{{asideBadge.value}}</span>
-                   <span class="pcoded-mcaret"></span>
-                 </a>
-               </ng-template>
-             </li>
-             <li [routerLinkActive]="['active']" *ngIf="asideItem.type === 'sub'" class="pcoded-hasmenu" [attr.dropdown-icon]="dropDownIcon" [attr.subitem-icon]="subItemIcon" appAccordionLink group="{{asideItem.state}}">
-               <a [routerLinkActive]="['active']" href="javascript:;" appAccordionToggle>
-                 <span class="pcoded-micon"><i class="{{ asideItem.icon }}"></i><b>{{ asideItem.short_label }}</b></span>
-                 <span class="pcoded-mtext">{{ asideItem.name }}</span>
-                 <span *ngFor="let asideBadge of asideItem.badge" class="pcoded-badge label label-{{ asideBadge.type }}">{{asideBadge.value}}</span>
-                 <span class="pcoded-mcaret"></span>
-               </a>
-               <ul class="pcoded-submenu">
-                 <ng-template ngFor let-asideChildren [ngForOf]="asideItem.children">
-                   <li [routerLinkActive]="['active']" *ngIf="asideChildren.type !== 'sub'">
-                     <a [routerLink]="['/', asideItem.state, asideChildren.state]" target="{{asideChildren.target ? '_blank' : '_self'}}">
-                       <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                       <span class="pcoded-mtext">{{ asideChildren.name }} </span>
-                       <span *ngFor="let asideChildrenBadge of asideChildren.badge" class="pcoded-badge label label-{{ asideChildrenBadge.type }}">{{asideChildrenBadge.value}}</span>
-                       <span class="pcoded-mcaret"></span>
-                     </a>
-                   </li>
-
-                   <li [routerLinkActive]="['active']" class="pcoded-hasmenu" [attr.dropdown-icon]="dropDownIcon" [attr.subitem-icon]="subItemIcon" *ngIf="asideChildren.type === 'sub'" appAccordionLink group="sub-toggled">
-                     <a href="javascript:;" appAccordionToggle>
-                       <span class="pcoded-micon"><i class="ti-direction-alt"></i></span>
-                       <span class="pcoded-mtext">{{ asideChildren.name }}</span>
-                       <span *ngFor="let asideChildrenBadge of asideChildren.badge" class="pcoded-badge label label-{{ asideChildrenBadge.type }}">{{asideChildrenBadge.value}}</span>
-                       <span class="pcoded-mcaret"></span>
-                     </a>
-                     <ul class="pcoded-submenu">
-                       <ng-template ngFor let-asideChildrenSub [ngForOf]="asideChildren.children">
-                         <li [routerLinkActive]="['active']">
-                           <a [routerLink]="['/', asideItem.state, asideChildren.state, asideChildrenSub.state]" target="{{asideChildrenSub.target ? '_blank' : '_self'}}">
-                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                             <span class="pcoded-mtext">{{ asideChildrenSub.name }}</span>
-                             <span *ngFor="let asideChildrenSubBadge of asideChildrenSub.badge" class="pcoded-badge label label-{{ asideChildrenSubBadge.type }}">{{asideChildrenSubBadge.value}}</span>
-                             <span class="pcoded-mcaret"></span>
-                           </a>
-                         </li>
-                       </ng-template>
-                     </ul>
-                   </li>
-                 </ng-template>
-               </ul>
-             </li>
-           </ul>
-         </span>
-       </perfect-scrollbar>
-     </div>
-   </nav>
    <div class="pcoded-content">
      <div class="pcoded-inner-content">
        <!-- Main-body start -->
        <div class="main-body">
          <div class="page-wrapper">
-           <router-outlet>
-             <app-title></app-title>
-             <app-breadcrumbs></app-breadcrumbs>
-             <app-spinner></app-spinner>
-           </router-outlet>
          </div>
        </div>
        <div id="styleSelector" [ngClass]="configOpenRightBar">
          <div class="selector-toggle">
            <a href="javascript:" placement="left" ngbTooltip="Live layout customizer" (click)="toggleRightbar()"></a>
          </div>
-         <ul>
-           <li>
-             <p class="selector-title main-title st-main-title"><b>Gradient </b>able Customizer</p><span class="text-muted">Live customizer with tons of options</span></li>
-           <li>
-             <p class="selector-title">Main layouts</p>
-           </li>
-           <li>
-             <div class="theme-color">
-               <a href="javascript:" (click)="setNavBarTheme('themelight1')" navbar-theme="themelight1" placement="top" ngbTooltip="Light Sidebar">
-                 <span class="head"></span>
-                 <span class="cont"></span>
-               </a>
-               <a href="javascript:" (click)="setNavBarTheme('theme1')" navbar-theme="theme1" placement="top" ngbTooltip="Dark Sidebar">
-                 <span class="head"></span>
-                 <span class="cont"></span>
-               </a>
-               <a href="javascript:" (click)="setLayoutType('img')" layout-type="img" placement="top" ngbTooltip="Sidebar with image">
-                 <span class="head"></span>
-                 <span class="cont"></span>
-               </a>
-               <a href="javascript:" (click)="setLayoutType('light')" layout-type="light" placement="top" ngbTooltip="Light Layout">
-                 <span class="head"></span>
-                 <span class="cont"></span>
-               </a>
-               <a href="javascript:" (click)="setLayoutType('dark')" layout-type="dark" placement="top" ngbTooltip="Dark Layout">
-                 <span class="head"></span>
-                 <span class="cont"></span>
-               </a>
-             </div>
-           </li>
-         </ul>
          <perfect-scrollbar [style.max-width]="'100%'" [style.max-height]="'calc(100vh - 495px)'" [config]="config">
-           <div class="style-cont m-t-10">
              <div class="md-tabs">
              <ngb-tabset>
-               <ngb-tab title="Layouts">
+               <ngb-tab title="DATA">
                  <ng-template ngbTabContent>
                    <div [@fadeInOutTranslate] class="m-t-15">
                      <ul>
@@ -429,7 +304,7 @@
                    </div>
                  </ng-template>
                </ngb-tab>
-               <ngb-tab title="Sidebar Settings">
+               <ngb-tab title="STYLE">
                  <ng-template ngbTabContent>
                    <div [@fadeInOutTranslate] class="m-t-15">
                      <ul>
@@ -602,19 +477,7 @@
                  </li>
                </ul>
              </div>
-           </div>
          </perfect-scrollbar>
-         <ul>
-           <li>
-             <a href="https://codedthemes.com/" target="_blank" class="btn btn-success btn-block m-r-15 m-t-10 m-b-10">Profile</a>
-             <a href="https://codedthemes.com/item/category/templates/admin-templates/" target="_blank" class="btn btn-primary btn-block m-r-15 m-t-5 m-b-10">Online Documentation</a>
-           </li>
-           <li class="text-center">
-             <span class="text-center f-18 m-t-15 m-b-15 d-block">Thank you for sharing !</span>
-             <a href="https://www.facebook.com/codedthemes" target="_blank" class="btn btn-facebook soc-icon m-b-20"><i class="fa fa-facebook"></i></a>
-             <a href="https://twitter.com/codedthemes" target="_blank" class="btn btn-twitter soc-icon m-l-20 m-b-20"><i class="fa fa-twitter"></i></a>
-           </li>
-         </ul>
        </div>
      </div>
    </div>
